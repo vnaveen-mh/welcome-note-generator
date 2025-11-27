@@ -1,0 +1,43 @@
+# Git
+.git
+.gitignore
+
+# Environment files
+.env
+.env.*
+
+# Documentation
+*.md
+
+# IDE and OS files
+.DS_Store
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Build artifacts
+welcome-note-web
+welcome-note-generator
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test files
+tests/
+*_test.go
+
+# Genkit cache
+.genkit/
+
+# Images
+images/
+
+# Scripts
+*.sh
+
+# Temporary files
+tmp/
+temp/

@@ -1,0 +1,196 @@
+package templates
+
+templ Layout(title string) {
+	<!DOCTYPE html>
+	<html lang="en" class="h-full">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>{ title }</title>
+			<link rel="preconnect" href="https://fonts.googleapis.com"/>
+			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+			<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+			<script src="https://cdn.tailwindcss.com"></script>
+			<script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@1.0.0-RC.6/bundles/datastar.js"></script>
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+			<style>
+				:root {
+					--bg: #f5f7fb;
+					--bg-contrast: #0f172a;
+					--card: #ffffff;
+					--border: #e2e8f0;
+					--muted: #475569;
+					--text: #0b1224;
+					--accent: #0ea5e9;
+					--accent-strong: #0284c7;
+					--accent-soft: #e0f2fe;
+					--shadow: 0 12px 45px rgba(15, 23, 42, 0.08);
+				}
+
+				body {
+					font-family: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+					-webkit-font-smoothing: antialiased;
+					-moz-osx-font-smoothing: grayscale;
+					font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+					background: var(--bg);
+					color: var(--text);
+				}
+
+				@keyframes gradient {
+					0% { background-position: 0% 50%; }
+					50% { background-position: 100% 50%; }
+					100% { background-position: 0% 50%; }
+				}
+				.hero-surface {
+					background: radial-gradient(120% 120% at 20% 20%, rgba(14, 165, 233, 0.12), transparent 50%),
+						radial-gradient(90% 90% at 80% 10%, rgba(14, 165, 233, 0.08), transparent 50%),
+						linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+					border-bottom: 1px solid var(--border);
+				}
+				.hero-animated {
+					position: relative;
+					overflow: hidden;
+					background: linear-gradient(180deg, #f8fbff 0%, #f1f5f9 60%, #e8f4ff 100%);
+				}
+				.hero-animated .hero-grid::before,
+				.hero-animated .hero-grid::after {
+					content: "";
+					position: absolute;
+					inset: -50%;
+					background: radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.15), transparent 45%),
+						radial-gradient(circle at 20% 20%, rgba(34, 211, 238, 0.12), transparent 40%),
+						radial-gradient(circle at 80% 10%, rgba(45, 212, 191, 0.12), transparent 35%);
+					animation: heroGlow 14s ease-in-out infinite alternate;
+				}
+				.hero-animated .hero-grid::after {
+					animation-direction: alternate-reverse;
+					filter: blur(12px);
+				}
+				.hero-grid-lines {
+					position: absolute;
+					inset: 0;
+					background-image:
+						linear-gradient(rgba(14, 165, 233, 0.08) 1px, transparent 1px),
+						linear-gradient(90deg, rgba(14, 165, 233, 0.08) 1px, transparent 1px);
+					background-size: 80px 80px;
+					mask-image: radial-gradient(circle at 50% 40%, #000 50%, transparent 70%);
+					animation: gridDrift 18s linear infinite;
+				}
+				.hero-beam {
+					position: absolute;
+					inset: 20% auto 10% 45%;
+					width: 50%;
+					height: 35%;
+					transform: skewX(-15deg);
+					background: linear-gradient(120deg, rgba(14, 165, 233, 0.4), rgba(14, 165, 233, 0));
+					filter: blur(18px);
+					animation: beamSweep 10s ease-in-out infinite;
+				}
+				@keyframes heroGlow {
+					from { transform: translate3d(-2%, 0, 0) scale(1); }
+					to { transform: translate3d(2%, -1%, 0) scale(1.05); }
+				}
+				@keyframes gridDrift {
+					from { background-position: 0 0, 0 0; }
+					to { background-position: 80px 80px, 80px 80px; }
+				}
+				@keyframes beamSweep {
+					0% { transform: translateX(-10%) skewX(-15deg); opacity: 0.35; }
+					50% { transform: translateX(8%) skewX(-12deg); opacity: 0.6; }
+					100% { transform: translateX(-5%) skewX(-15deg); opacity: 0.35; }
+				}
+				.card {
+					background: var(--card);
+					border: 1px solid var(--border);
+					box-shadow: var(--shadow);
+				}
+				.pill {
+					border-radius: 9999px;
+				}
+				.focus-outline:focus-visible {
+					outline: 2px solid var(--accent);
+					outline-offset: 3px;
+				}
+			</style>
+			<script>
+				if ("scrollRestoration" in history) {
+					history.scrollRestoration = "manual";
+				}
+				window.addEventListener("pageshow", () => {
+					if (!location.hash) {
+						window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+					}
+				});
+
+				// Copy note to clipboard using the Datastar signal value directly
+				function copyNoteToClipboard(note, button) {
+					const text = note ?? '';
+					const targetButton = button || document.activeElement;
+
+					if (!text || !targetButton) return;
+
+					navigator.clipboard.writeText(text).then(() => {
+						// Update button state
+						const copyIcon = targetButton.querySelector('.copy-icon');
+						const checkIcon = targetButton.querySelector('.check-icon');
+						const copyText = targetButton.querySelector('.copy-text');
+
+						copyIcon.classList.add('hidden');
+						checkIcon.classList.remove('hidden');
+						copyText.textContent = 'Copied!';
+						targetButton.classList.add('bg-emerald-50', 'border-emerald-300', 'text-emerald-700');
+						targetButton.classList.remove('hover:bg-gray-200');
+
+						// Reset after 2 seconds
+						setTimeout(() => {
+							copyIcon.classList.remove('hidden');
+							checkIcon.classList.add('hidden');
+							copyText.textContent = 'Copy';
+							targetButton.classList.remove('bg-emerald-50', 'border-emerald-300', 'text-emerald-700');
+							targetButton.classList.add('hover:bg-gray-200');
+						}, 2000);
+					}).catch(err => {
+						console.error('Failed to copy text: ', err);
+					});
+				}
+
+				// Copy error to clipboard
+				function copyErrorToClipboard(button) {
+					const card = button.closest('.error-card');
+					const errorElement = card?.querySelector('.error-text') || document.getElementById('error-content');
+
+					if (!errorElement) return;
+
+					const text = errorElement.textContent || errorElement.innerText;
+
+					navigator.clipboard.writeText(text).then(() => {
+						// Update button state
+						const copyIcon = button.querySelector('.copy-icon');
+						const checkIcon = button.querySelector('.check-icon');
+						const copyText = button.querySelector('.copy-text');
+
+						copyIcon.classList.add('hidden');
+						checkIcon.classList.remove('hidden');
+						copyText.textContent = 'Copied!';
+						button.classList.add('bg-emerald-50', 'border-emerald-300', 'text-emerald-700');
+						button.classList.remove('bg-white', 'hover:bg-red-100', 'border-red-200', 'text-red-600', 'hover:text-red-700');
+
+						// Reset after 2 seconds
+						setTimeout(() => {
+							copyIcon.classList.remove('hidden');
+							checkIcon.classList.add('hidden');
+							copyText.textContent = 'Copy';
+							button.classList.remove('bg-emerald-50', 'border-emerald-300', 'text-emerald-700');
+							button.classList.add('bg-white', 'hover:bg-red-100', 'border-red-200', 'text-red-600', 'hover:text-red-700');
+						}, 2000);
+					}).catch(err => {
+						console.error('Failed to copy error: ', err);
+					});
+				}
+			</script>
+		</head>
+		<body class="h-full">
+			{ children... }
+		</body>
+	</html>
+}

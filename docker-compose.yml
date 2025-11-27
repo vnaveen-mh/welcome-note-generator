@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: welcome-note-generator:latest
+    container_name: welcome-note-generator
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8080}:8080"
+    environment:
+      # Server configuration
+      - PORT=${PORT:-8080}
+
+      # API Keys (REQUIRED)
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+
+      # CSRF configuration (REQUIRED - generate with: openssl rand -hex 32)
+      - CSRF_KEY=${CSRF_KEY}
+
+      # Trusted origins for CSRF (comma-separated, optional)
+      - CSRF_TRUSTED_ORIGINS=${CSRF_TRUSTED_ORIGINS:-}
+
+      # Rate limiting configuration
+      - RATE_LIMIT_REQUESTS_PER_MINUTE=${RATE_LIMIT_REQUESTS_PER_MINUTE:-30}
+      - RATE_LIMIT_BURST_SIZE=${RATE_LIMIT_BURST_SIZE:-5}
+      - RATE_LIMIT_CLEANUP_INTERVAL=${RATE_LIMIT_CLEANUP_INTERVAL:-5m}
+      - RATE_LIMIT_LIMITER_TTL=${RATE_LIMIT_LIMITER_TTL:-15m}
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/"]
+      interval: 30s
+      timeout: 3s
+      start_period: 5s
+      retries: 3
+    # Uncomment to use env file
+    # env_file:
+    #   - .env
