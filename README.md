@@ -18,17 +18,20 @@ This project demonstrates how to build a complete, production-quality AI applica
 ## Tech Stack
 
 **Backend:**
+
 - **[Genkit](https://firebase.google.com/docs/genkit)** — AI flow orchestration
 - **[Gin](https://gin-gonic.com/)** — HTTP routing and middleware
 - **Gemini 2.0 Flash** — Fast, powerful LLM
 - **[Ollama](https://ollama.ai/)** — Local model support
 
 **Frontend (Go-only):**
+
 - **[Templ](https://templ.guide/)** — Type-safe HTML templates
 - **[Datastar](https://data-star.dev/)** — Reactive UI via SSE
 - **[Tailwind CSS](https://tailwindcss.com/)** — Styling
 
 **Production:**
+
 - Rate limiting (configurable, per-IP)
 - CSRF protection
 - Structured logging
@@ -65,37 +68,44 @@ This project demonstrates how to build a complete, production-quality AI applica
 ## The Five Flows
 
 ### V1 — Simple Prompt
+
 **Input:** String (e.g., "birthday party")
 **Output:** Welcome note text
 
 The foundation. A typed Go function that takes a string, generates text, and returns it.
 
 ### V2 — Structured Input
+
 **Input:** Structured fields (occasion, language, length, tone)
 **Output:** Welcome note text
 
 Users get control through clean dropdowns instead of a single text box.
 
 ### V3 — Structured Output
+
 **Input:** Structured fields
 **Output:** JSON with note + metadata
 
 The LLM returns typed JSON with sentiment, safety scores, and extracted context. Genkit handles validation automatically.
 
 ### Safe Flow — Content Moderation
+
 **Input:** Structured fields
 **Output:** Note + moderation status + sanitized version
 
 A two-stage pipeline:
+
 1. Generate the note
 2. Moderate with a second LLM call
 3. Sanitize if flagged and return both versions
 
 ### Smart Flow — Natural Language Interpretation
+
 **Input:** Free-form description (e.g., "short, friendly note for hotel guests")
 **Output:** Interpreted parameters + generated note + moderation
 
 The full pipeline:
+
 1. **Interpret** natural language → structured parameters
 2. **Generate** note using V3 flow
 3. **Moderate** for safety
@@ -111,18 +121,21 @@ The full pipeline:
 ### Local Development
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/your-username/welcome-note-generator.git
    cd welcome-note-generator
    ```
 
 2. **Set environment variables**
+
    ```bash
    cp .env.example .env
    # Edit .env with your API key
    ```
 
 3. **Run with Go**
+
    ```bash
    go run cmd/web/main.go
    ```
@@ -137,22 +150,23 @@ The full pipeline:
 See [DOCKER.md](DOCKER.md) for comprehensive Docker deployment instructions.
 
 **Quick start:**
+
 ```bash
 docker-compose up -d
 ```
 
 ## Environment Variables
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `GEMINI_API_KEY` | Google Gemini API key | Required |
-| `PORT` | Server port | `8080` |
-| `CSRF_KEY` | 32-byte CSRF key (hex) | Auto-generated |
-| `CSRF_TRUSTED_ORIGINS` | Comma-separated trusted origins | Empty |
-| `RATE_LIMIT_REQUESTS_PER_MINUTE` | Rate limit per IP | `30` |
-| `RATE_LIMIT_BURST_SIZE` | Rate limit burst size | `5` |
-| `RATE_LIMIT_CLEANUP_INTERVAL` | Cleanup interval | `5m` |
-| `RATE_LIMIT_LIMITER_TTL` | Limiter TTL | `15m` |
+| Variable                         | Description                     | Default        |
+| -------------------------------- | ------------------------------- | -------------- |
+| `GEMINI_API_KEY`                 | Google Gemini API key           | Required       |
+| `PORT`                           | Server port                     | `8080`         |
+| `CSRF_KEY`                       | 32-byte CSRF key (hex)          | Auto-generated |
+| `CSRF_TRUSTED_ORIGINS`           | Comma-separated trusted origins | Empty          |
+| `RATE_LIMIT_REQUESTS_PER_MINUTE` | Rate limit per IP               | `30`           |
+| `RATE_LIMIT_BURST_SIZE`          | Rate limit burst size           | `5`            |
+| `RATE_LIMIT_CLEANUP_INTERVAL`    | Cleanup interval                | `5m`           |
+| `RATE_LIMIT_LIMITER_TTL`         | Limiter TTL                     | `15m`          |
 
 ## Project Structure
 
@@ -283,6 +297,7 @@ See [DOCKER.md](DOCKER.md) for more deployment options.
 📖 **Read the full article:** [Building an AI-Powered App Entirely in Go](article_final.md)
 
 The article walks through:
+
 - The evolution from V1 to Smart Flow
 - Technical deep dives on CSRF, rate limiting, and reactive UI
 - Lessons learned at each stage
@@ -307,4 +322,4 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 **Built with Go 1.25, Genkit 1.2, and a love for clean code.**
 
-🚀 **[Live Demo](#)** | 📝 **[Medium Article](#)** | 🐛 **[Report Issue](https://github.com/your-username/welcome-note-generator/issues)**
+🚀 **[Live Demo](https://welcome-note-generator-20546638839.us-central1.run.app)** | 📝 **[Medium Article](https://medium.com/p/0d9be75d3d00)** | 🐛 **[Report Issue](https://github.com/your-username/welcome-note-generator/issues)**
