@@ -313,7 +313,7 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## Acknowledgments
 
-- [Firebase Genkit](https://firebase.google.com/docs/genkit) for AI orchestration
+- [Genkit](https://genkit.dev/docs/get-started/?lang=go) for AI orchestration
 - [Gin](https://gin-gonic.com/) for HTTP framework
 - [Templ](https://templ.guide/) for type-safe templates
 - [Datastar](https://data-star.dev/) for reactive UI
